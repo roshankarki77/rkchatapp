@@ -22,6 +22,7 @@ var mysql=require('mysql');
 //       console.log("Table created");
 //     });
 //   });
+var i=0;
 
 
 io.on('connection',socket=>{
@@ -38,10 +39,10 @@ io.on('connection',socket=>{
     
     
     socket.on('new-user-joined',name=>{
-        
+        i=i+1;
         users[socket.id]=name;
         socket.broadcast.emit('user-joined',name);
-        con.query("insert into chatusers(userId,userName) values ('"+3+"',"+"'"+name+"')",function(err,result){
+        con.query("insert into chatusers(userId,socketId) values ('"+i+"',"+"'"+socket.id+"')",function(err,result){
             if(err) throw err;
             console.log("socketid inserted");
         })
@@ -57,3 +58,4 @@ io.on('connection',socket=>{
         delete users[socket.id]
     })
 })
+
